@@ -1,0 +1,11 @@
+D:\dotNetCore\CoreApi\Core.Model\bin\Debug\netcoreapp2.2\Core.Model.deps.json
+D:\dotNetCore\CoreApi\Core.Model\bin\Debug\netcoreapp2.2\Core.Model.dll
+D:\dotNetCore\CoreApi\Core.Model\bin\Debug\netcoreapp2.2\Core.Model.pdb
+D:\dotNetCore\CoreApi\Core.Model\bin\Debug\netcoreapp2.2\SqlSugar.dll
+D:\dotNetCore\CoreApi\Core.Model\bin\Debug\netcoreapp2.2\SqlSugar.pdb
+D:\dotNetCore\CoreApi\Core.Model\obj\Debug\netcoreapp2.2\Core.Model.csprojResolveAssemblyReference.cache
+D:\dotNetCore\CoreApi\Core.Model\obj\Debug\netcoreapp2.2\Core.Model.csproj.CoreCompileInputs.cache
+D:\dotNetCore\CoreApi\Core.Model\obj\Debug\netcoreapp2.2\Core.Model.AssemblyInfoInputs.cache
+D:\dotNetCore\CoreApi\Core.Model\obj\Debug\netcoreapp2.2\Core.Model.AssemblyInfo.cs
+D:\dotNetCore\CoreApi\Core.Model\obj\Debug\netcoreapp2.2\Core.Model.dll
+D:\dotNetCore\CoreApi\Core.Model\obj\Debug\netcoreapp2.2\Core.Model.pdb
