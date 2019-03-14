@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Core.IService;
 using Core.Model.Base;
 using Core.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NLog;
@@ -14,6 +15,7 @@ using NLog;
 namespace CoreApi.Controllers
 {
     [Route("api/[controller]")]
+    
     public class CityInfoController : Controller
     {
         private ICityInfo IService = new CityInfoService();
@@ -43,6 +45,7 @@ namespace CoreApi.Controllers
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
+        [Authorize(Policy = "admin")]
         public JsonResult GetCityListByProID(int id)
         {
             var result = new ResponseModel();
