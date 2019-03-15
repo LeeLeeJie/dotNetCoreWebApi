@@ -1,4 +1,5 @@
-﻿using Core.IService;
+﻿using Core.Helper;
+using Core.IService;
 using Core.Model;
 using SqlSugar;
 using System;
@@ -7,9 +8,9 @@ using System.Text;
 
 namespace Core.Service
 {
-    public class EntityService : CoreDB, IEntity
+    public class EntityService : IEntity
     {
-        public SqlSugarClient db = GetClient();
+        public SqlSugarClient db = SqlSugarHelper.GetClient();
         /// <summary>
         /// 生成实体类
         /// </summary>

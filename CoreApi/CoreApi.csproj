@@ -23,10 +23,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core.Entity\Core.Entity.csproj" />
+    <ProjectReference Include="..\Core.Helper\Core.Helper.csproj" />
     <ProjectReference Include="..\Core.IService\Core.IService.csproj" />
     <ProjectReference Include="..\Core.Model\Core.Model.csproj" />
     <ProjectReference Include="..\Core.Service\Core.Service.csproj" />
-    <ProjectReference Include="..\Core.Token\Core.Token.csproj" />
   </ItemGroup>
 
   <ItemGroup>

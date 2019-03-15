@@ -1,4 +1,5 @@
-﻿using Core.Model;
+﻿using Core.Helper;
+using Core.Model;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -19,31 +20,9 @@ namespace Core.Service
         public SimpleClient sdb;
         public BaseService()
         {
-            db = GetClient();
+            db = SqlSugarHelper.GetClient();
             sdb = db.GetSimpleClient();
         }
-        /// <summary>
-        /// 获取客户端
-        /// </summary>
-        /// <returns></returns>
-        private SqlSugarClient GetClient()
-        {
-            SqlSugarClient db = new SqlSugarClient(
-                new ConnectionConfig()
-                {
-                    ConnectionString = BaseDBConfig.ConnectionString,
-                    DbType = DbType.MySql,
-                    IsAutoCloseConnection = true
-                }
-            );
-            db.Aop.OnLogExecuting = (sql, pars) =>
-            {
-                Console.WriteLine(sql + "\r\n" + db.Utilities.SerializeObject(pars.ToDictionary(it => it.ParameterName, it => it.Value)));
-                Console.WriteLine();
-            };
-            return db;
-        }
-
         #region CRUD
         public PageInfo<T> GetPageList(int pageIndex, int pageSize)
         {

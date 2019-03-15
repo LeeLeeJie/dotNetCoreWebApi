@@ -21,8 +21,15 @@ namespace CoreApi.Controllers
     {
         private ICityInfo IService = new CityInfoService();
         static Logger Logger = LogManager.GetCurrentClassLogger();
+        /// <summary>
+        /// 获取分页
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         // GET: api/<controller>
         [HttpGet]
+        [Route("GetPageList")]
         [Authorize(Policy = "Client")]
         [EnableCors("AllowSpecificOrigin")]
         public JsonResult GetPageList(int pageIndex = 1, int pageSize = 10)
@@ -46,17 +53,22 @@ namespace CoreApi.Controllers
             return Json(result);
         }
 
-        // GET api/<controller>/5
-        [HttpGet("{id}")]
+        /// <summary>
+        /// 根据省份ID获取下属城市
+        /// </summary>
+        /// <param name="id">省份ID</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetCityListByProID")]
         [Authorize(Policy = "admin")]
-        public JsonResult GetCityListByProID(int id)
+        public JsonResult GetCityListByProID(int ProID)
         {
             var result = new ResponseModel();
             try
             {
                 Logger.Info("调用接口开始~~~~~~~~~~");
                 result.returnCode = CodeEnum.success;
-                result.Data = IService.GetCityListByProID(id).Select(o => o.CityName);
+                result.Data = IService.GetCityListByProID(ProID).Select(o => o.CityName);
                 result.returnMsg = "执行成功";
                 Logger.Info("调用接口结束，返回参数：" + JsonConvert.SerializeObject(result));
             }

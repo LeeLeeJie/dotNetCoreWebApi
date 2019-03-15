@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Model.ConfigModel;
 using CoreApi.AuthHelper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -16,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.IdentityModel.Tokens;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using Swashbuckle.AspNetCore.Swagger;
@@ -28,16 +31,22 @@ namespace CoreApi
         public Startup(IHostingEnvironment env)
         {
             this._env = env;
-            Microsoft.Extensions.PlatformAbstractions.ApplicationEnvironment appEnvironment = PlatformServices.Default.Application;
-            string ContentRootPath = appEnvironment.ApplicationBasePath;
-            env.ContentRootPath = ContentRootPath;
-            env.WebRootPath = ContentRootPath;
+            //Microsoft.Extensions.PlatformAbstractions.ApplicationEnvironment appEnvironment = PlatformServices.Default.Application;
+            //string ContentRootPath = appEnvironment.ApplicationBasePath;
+            //env.ContentRootPath = ContentRootPath;
+            //env.WebRootPath = ContentRootPath;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            this.Configuration = builder.Build();
+            var test = Configuration.ToString();
+            BaseConfigModel.SetBaseConfig(Configuration, env.ContentRootPath, env.WebRootPath);
         }
 
         /// <summary>
         /// 配置信息
         /// </summary>
-        public IConfigurationRoot ConfigurationRoot { get; }
+        public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -79,21 +88,45 @@ namespace CoreApi
             });
 
             #endregion
+            #region 认证
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(o =>
+            {
+                JwtAuthConfigModel jwtConfig = new JwtAuthConfigModel();
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = "CoreApi",
+                    ValidAudience = "wr",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtConfig.JWTSecretKey)),
 
-            #region Token
-            services.AddSingleton<IMemoryCache>(factory =>
-            {
-                var cache = new MemoryCache(new MemoryCacheOptions());
-                return cache;
-            });
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("System", policy => policy.RequireClaim("SystemType").Build());
-                options.AddPolicy("Client", policy => policy.RequireClaim("ClientType").Build());
-                options.AddPolicy("Admin", policy => policy.RequireClaim("AdminType").Build());
+                    /***********************************TokenValidationParameters的参数默认值***********************************/
+                    RequireSignedTokens = true,
+                    // SaveSigninToken = false,
+                    // ValidateActor = false,
+                    // 将下面两个参数设置为false，可以不验证Issuer和Audience，但是不建议这样做。
+                    ValidateAudience = false,
+                    ValidateIssuer = true,
+                    ValidateIssuerSigningKey = true,
+                    // 是否要求Token的Claims中必须包含 Expires
+                    RequireExpirationTime = true,
+                    // 允许的服务器时间偏移量
+                    // ClockSkew = TimeSpan.FromSeconds(300),
+                    // 是否验证Token有效期，使用当前时间与Token的Claims中的NotBefore和Expires对比
+                    ValidateLifetime = true
+                };
             });
             #endregion
-
+            #region 授权
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Client", policy => policy.RequireRole("Client").Build());
+                options.AddPolicy("Admin", policy => policy.RequireRole("Admin").Build());
+                options.AddPolicy("AdminOrClient", policy => policy.RequireRole("Admin,Client").Build());
+            });
+            #endregion
             #region CORS
             services.AddCors(c =>
             {
@@ -135,7 +168,7 @@ namespace CoreApi
             });
             #endregion
             #region TokenAuth
-            app.UseMiddleware<TokenAuth>();
+            app.UseMiddleware<JwtAuthorizationFilter>();
             #endregion
             app.UseMvc();
             
