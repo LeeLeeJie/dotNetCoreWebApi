@@ -93,6 +93,25 @@ namespace CoreApi
                 options.AddPolicy("Admin", policy => policy.RequireClaim("AdminType").Build());
             });
             #endregion
+
+            #region CORS
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowAnyOrigin", policy =>
+                {
+                    policy.AllowAnyOrigin()//允许任何源
+                    .AllowAnyMethod()//允许任何方式
+                    .AllowAnyHeader()//允许任何头
+                    .AllowCredentials();//允许cookie
+                });
+                c.AddPolicy("AllowSpecificOrigin", policy =>
+                {
+                    policy.WithOrigins("http://localhost:8083")
+                    .WithMethods("GET", "POST", "PUT", "DELETE")
+                    .WithHeaders("authorization");
+                });
+            });
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
