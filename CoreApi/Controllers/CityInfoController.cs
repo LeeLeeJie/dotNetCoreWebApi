@@ -6,6 +6,7 @@ using Core.IService;
 using Core.Model.Base;
 using Core.Service;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NLog;
@@ -22,7 +23,9 @@ namespace CoreApi.Controllers
         static Logger Logger = LogManager.GetCurrentClassLogger();
         // GET: api/<controller>
         [HttpGet]
-        public JsonResult Get(int pageIndex = 1, int pageSize = 10)
+        [Authorize(Policy = "Client")]
+        [EnableCors("AllowSpecificOrigin")]
+        public JsonResult GetPageList(int pageIndex = 1, int pageSize = 10)
         {
             var result = new ResponseModel();
             try

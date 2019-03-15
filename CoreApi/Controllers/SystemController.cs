@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace CoreApi.Controllers
 {
+    [Route("api/[controller]")]
     public class SystemController: Controller
     {
         #region Token
