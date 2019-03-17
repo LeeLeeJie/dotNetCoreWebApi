@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Helper;
 using Core.Model.ConfigModel;
 using CoreApi.AuthHelper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.PlatformAbstractions;
 using Microsoft.Extensions.Caching.Memory;
@@ -124,8 +127,9 @@ namespace CoreApi
             {
                 options.AddPolicy("Client", policy => policy.RequireRole("Client").Build());
                 options.AddPolicy("Admin", policy => policy.RequireRole("Admin").Build());
-                options.AddPolicy("AdminOrClient", policy => policy.RequireRole("Admin,Client").Build());
+                options.AddPolicy("AdminOrClient", policy => policy.RequireRole("Admin", "Client").Build());
             });
+            services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>();
             #endregion
             #region CORS
             services.AddCors(c =>
@@ -167,6 +171,7 @@ namespace CoreApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiHelp V1zzzz");
             });
             #endregion
+            app.UseErrorHandling();
             #region TokenAuth
             app.UseMiddleware<JwtAuthorizationFilter>();
             #endregion

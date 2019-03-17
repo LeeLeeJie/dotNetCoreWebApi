@@ -12,6 +12,10 @@ namespace Core.Model.Base
     public class ResponseModel
     {
         /// <summary>
+        /// 状态
+        /// </summary>
+        public bool Success { get; set; }
+        /// <summary>
         /// 错误代码
         /// </summary>
         [DataMember]

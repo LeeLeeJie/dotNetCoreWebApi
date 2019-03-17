@@ -60,7 +60,7 @@ namespace CoreApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("GetCityListByProID")]
-        [Authorize(Policy = "admin")]
+        [Authorize(Policy = "AdminOrClient")]
         public JsonResult GetCityListByProID(int ProID)
         {
             var result = new ResponseModel();
