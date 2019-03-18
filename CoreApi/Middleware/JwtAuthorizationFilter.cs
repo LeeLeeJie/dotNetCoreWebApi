@@ -1,5 +1,7 @@
 ﻿using Core.Helper;
+using Core.Model.Base;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,14 +57,17 @@ namespace CoreApi.AuthHelper
                 }
                 else
                 {
-                    httpContext.Response.StatusCode = 401;
+                    httpContext.Response.StatusCode = 400;
+                    var result = JsonConvert.SerializeObject(new ResponseModel() { Success = false, returnMsg = "验证不通过", returnCode = CodeEnum.failed });
+                    httpContext.Response.ContentType = "application/json;charset=utf-8";
+                    return httpContext.Response.WriteAsync(result);
+
                 }
             }
             catch(Exception ex)
             {
                 throw ex;
             }
-            return _next(httpContext);
         }
     }
 }
