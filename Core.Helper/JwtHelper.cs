@@ -36,18 +36,18 @@ namespace Core.Helper
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             //过期时间
             int exp = 0;
-            switch (tokenModel.TokenType)
+            switch (tokenModel.TokenType.ToLower())
             {
-                case "Web":
+                case "web":
                     exp = jwtConfig.WebExp;
                     break;
-                case "App":
+                case "app":
                     exp = jwtConfig.AppExp;
                     break;
-                case "MiniProgram":
+                case "miniprogram":
                     exp = jwtConfig.MiniProgramExp;
                     break;
-                case "Other":
+                case "other":
                     exp = jwtConfig.OtherExp;
                     break;
             }
@@ -145,8 +145,14 @@ namespace Core.Helper
                 return false;
             }
             //再其次 进行自定义的验证
-            success = success && validatePayLoad(payLoad);
-
+            if (validatePayLoad != null)
+            {
+                if (!validatePayLoad(payLoad))
+                {
+                    return false;
+                }
+                
+            }
             //最后解析出Payload
             tm=SerializeJWT(encodeJwt);
             return success;

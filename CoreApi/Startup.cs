@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Core.Helper;
 using Core.Model.ConfigModel;
 using CoreApi.AuthHelper;
+using CoreApi.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
