@@ -12,6 +12,7 @@ using CoreApi.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -95,15 +96,17 @@ namespace CoreApi
             #region 认证
             services.AddAuthentication(x =>
             {
+                //2、Authentication
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(o =>
             {
                 JwtAuthConfigModel jwtConfig = new JwtAuthConfigModel();
                 o.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidIssuer = "CoreApi",
-                    ValidAudience = "wr",
+                    ValidIssuer = jwtConfig.Issuer,
+                    ValidAudience = jwtConfig.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtConfig.JWTSecretKey)),
 
                     /***********************************TokenValidationParameters的参数默认值***********************************/
@@ -150,6 +153,13 @@ namespace CoreApi
                 });
             });
             #endregion
+            #region Redis
+            services.AddDistributedRedisCache(options =>
+            {
+                options.Configuration = BaseConfigModel.Configuration["Redis:ConnectionString"];
+            });
+            #endregion
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -157,14 +167,18 @@ namespace CoreApi
         {
             /* NLog */
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);//这是为了防止中文乱码
-            loggerFactory.AddNLog();//添加NLog
-            this._env.ConfigureNLog(Path.Combine("Config", "nlog.config"));//读取Nlog配置文件
-
+            //loggerFactory.AddNLog();//添加NLog
+            //this._env.ConfigureNLog(Path.Combine("Config", "nlog.config"));//读取Nlog配置文件
+            #region NLog配置
+            loggerFactory.AddNLog(); // 添加NLog
+            loggerFactory.ConfigureNLog(Path.Combine("Config", "nlog.config")); // 添加Nlog.config配置文件
+            loggerFactory.ConfigureNLog(Path.Combine("Config", "nlogDB.config")); //把日志文件保存到数据库配置文件
+            loggerFactory.AddDebug();
+            #endregion
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
             #region Swagger
             app.UseSwagger();
             app.UseSwaggerUI(c =>

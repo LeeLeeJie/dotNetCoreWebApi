@@ -20,7 +20,13 @@ namespace CoreApi.Controllers
     public class CityInfoController : Controller
     {
         private ICityInfo IService = new CityInfoService();
-        static Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger Logger;
+
+        public CityInfoController()
+        {
+            Logger = LogManager.GetLogger("FileLogger");
+        }
+
         /// <summary>
         /// 获取分页
         /// </summary>
@@ -30,13 +36,16 @@ namespace CoreApi.Controllers
         // GET: api/<controller>
         [HttpGet]
         [Route("GetPageList")]
-        [Authorize(Policy = "Client")]
+        //[Authorize(Policy = "Client")]
         [EnableCors("AllowSpecificOrigin")]
         public JsonResult GetPageList(int pageIndex = 1, int pageSize = 10)
         {
             var result = new ResponseModel();
             try
             {
+                Logger.Info("写入Info文件");
+                Logger.Debug("写入Debug文件");
+                Logger.Error("写入Error文件");
                 Logger.Info("调用接口开始~~~~~~~~~~");
                 result.returnCode = CodeEnum.success;
                 result.Data = IService.GetPageList(pageIndex, pageSize);
@@ -78,7 +87,24 @@ namespace CoreApi.Controllers
                 result.returnMsg = ex.Message;
                 Logger.Error(ex);
             }
+            return Json(result);
+        }
 
+
+        /// 将日志写入数据库
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("WriteLogToDb")]
+        public JsonResult WriteLogToDb()
+        {
+            var result = new ResponseModel();
+            Logger _dblogger = LogManager.GetLogger("DbLogger");
+            LogEventInfo ei = new LogEventInfo();
+            ei.Properties["Desc"] = "我是自定义消息";
+            _dblogger.Info(ei);
+            _dblogger.Debug(ei);
+            _dblogger.Trace(ei);
             return Json(result);
         }
 

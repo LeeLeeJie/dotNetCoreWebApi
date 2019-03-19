@@ -1,4 +1,5 @@
 ﻿using Core.Model.ConfigModel;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
@@ -121,6 +122,9 @@ namespace Core.Helper
         /// <returns></returns>
         public static bool ValidateRuleBase(string encodeJwt,out TokenModel tm, Func<Dictionary<string, object>, bool> validatePayLoad = null)
         {
+            //与Redis比较
+            RedisCacheHelper redisCacheHelper = new RedisCacheHelper(IDistributedCache cache);
+
             tm = null;
             var success = true;
             var jwtArr = encodeJwt.Split('.');

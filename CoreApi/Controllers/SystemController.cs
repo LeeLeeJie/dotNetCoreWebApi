@@ -1,8 +1,11 @@
 ﻿using Core.Helper;
 using Core.IService;
 using Core.Model.Base;
+using Core.Model.ConfigModel;
 using Core.Service;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -15,6 +18,17 @@ namespace CoreApi.Controllers
     [Route("api/[controller]")]
     public class SystemController: Controller
     {
+        private IDistributedCache _cache;
+        private IHttpContextAccessor _httpContextAccessor;
+        private IJwtService service = null;
+
+
+        public SystemController(IDistributedCache cache, IHttpContextAccessor httpContextAccessor)
+        {
+            _cache = cache;
+            _httpContextAccessor = httpContextAccessor;
+            service = new JwtService(_cache, _httpContextAccessor);
+        }
         #region 模拟登录，获取JWT
         /// <summary>
         /// 模拟登录，获取JWT
@@ -26,19 +40,72 @@ namespace CoreApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("GetJWTStr")]
-        public JsonResult GetJWTStr(Core.Helper.TokenModel tm)
+        public JsonResult CreateToken(TokenModel tm)
         {
+            
             var result = new ResponseModel();
             try
             {
-                result.Data=JwtHelper.IssueJWT(tm);
-                result.returnCode = CodeEnum.success;
-                result.returnMsg = "执行成功";
+                if (service != null)
+                {
+                    result.Data = service.CreateJwtToken(tm);
+                    result.returnCode = CodeEnum.success;
+                    result.returnMsg = "执行成功";
+                }
+                else
+                {
+                    result.returnCode = CodeEnum.failed;
+                    result.returnMsg = "IJwtService 接口初始化失败！";
+                }
+                
             }
             catch(Exception ex)
             {
                 result.returnCode = CodeEnum.failed;
                 result.returnMsg = "执行失败,异常信息："+ ex;
+            }
+            return Json(result);
+        }
+
+        /// <summary>
+        /// 刷新Token
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("RefresToken")]
+        public JsonResult RefresToken(string token)
+        {
+            IJwtService service = new JwtService(_cache, _httpContextAccessor);
+            var result = new ResponseModel();
+            try
+            {
+                if (service != null)
+                {
+                    JwtAuthorizationDto data = service.RefreshTokenAsync(token).Result;
+                    if (data.Success)
+                    {
+                        result.returnCode = CodeEnum.success;
+                        result.returnMsg = "执行成功";
+                    }
+                    else
+                    {
+                        result.returnCode = CodeEnum.failed;
+                        result.returnMsg = "执行失败";
+                    }
+                    result.Data = data;
+                   
+                }
+                else
+                {
+                    result.returnCode = CodeEnum.failed;
+                    result.returnMsg = "IJwtService 接口初始化失败！";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.returnCode = CodeEnum.failed;
+                result.returnMsg = "执行失败,异常信息：" + ex;
             }
             return Json(result);
         }

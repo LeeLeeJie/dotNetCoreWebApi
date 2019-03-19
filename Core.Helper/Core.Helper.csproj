@@ -20,6 +20,9 @@
     <Reference Include="Microsoft.Extensions.Caching.Memory">
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.caching.memory\2.2.0\lib\netstandard2.0\Microsoft.Extensions.Caching.Memory.dll</HintPath>
     </Reference>
+    <Reference Include="StackExchange.Redis.StrongName">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\stackexchange.redis.strongname\1.2.6\lib\netstandard1.5\StackExchange.Redis.StrongName.dll</HintPath>
+    </Reference>
     <Reference Include="System.IdentityModel.Tokens.Jwt">
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\system.identitymodel.tokens.jwt\5.3.0\lib\netstandard2.0\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>

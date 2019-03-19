@@ -58,10 +58,7 @@ namespace CoreApi.AuthHelper
                 else
                 {
                     httpContext.Response.StatusCode = 400;
-                    var result = JsonConvert.SerializeObject(new ResponseModel() { Success = false, returnMsg = "验证不通过", returnCode = CodeEnum.failed });
-                    httpContext.Response.ContentType = "application/json;charset=utf-8";
-                    return httpContext.Response.WriteAsync(result);
-
+                    throw new Exception("验证不通过");
                 }
             }
             catch(Exception ex)

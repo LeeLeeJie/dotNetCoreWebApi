@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core.Entity\Core.Entity.csproj" />
+    <ProjectReference Include="..\Core.Helper\Core.Helper.csproj" />
     <ProjectReference Include="..\Core.Model\Core.Model.csproj" />
   </ItemGroup>
 
