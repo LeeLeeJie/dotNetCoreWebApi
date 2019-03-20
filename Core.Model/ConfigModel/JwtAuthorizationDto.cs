@@ -9,7 +9,7 @@ namespace Core.Model.ConfigModel
         /// <summary>
         /// 用户唯一标识
         /// </summary>
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         /// <summary>
         /// jwt Token 

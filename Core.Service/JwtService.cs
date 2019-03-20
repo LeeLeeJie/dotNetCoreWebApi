@@ -133,7 +133,7 @@ namespace Core.Service
             //存储 Token 信息
             var jwt = new JwtAuthorizationDto
             {
-                UserId = Guid.NewGuid(),
+                UserId = Guid.NewGuid().ToString(),
                 Token = tokenStr,
                 Auths = new DateTimeOffset(authTime).ToUnixTimeSeconds(),
                 Expires = new DateTimeOffset(expiresAt).ToUnixTimeSeconds(),
@@ -177,12 +177,7 @@ namespace Core.Service
         /// <returns></returns>
         public async Task DeactivateAsync(string token)
         {
-            redisCacheHelper.Set(token,
-                " ", new DistributedCacheEntryOptions
-                {
-                    AbsoluteExpirationRelativeToNow =
-                        TimeSpan.FromMinutes(Convert.ToDouble(jwtConfig.WebExp))
-                });
+            redisCacheHelper.Remove(token);
         }
         /// <summary>
         /// 判断 Token 是否有效
@@ -215,26 +210,24 @@ namespace Core.Service
         /// <param name="token">Token</param>
         /// <param name="dto">用户信息</param>
         /// <returns></returns>
-        public async Task<JwtAuthorizationDto> RefreshTokenAsync(string token)
+        public async Task RefreshTokenAsync(string token)
         {
-            return await Task.Run(() =>
+             await Task.Run(() =>
             {
-                JwtAuthorizationDto jwtAuthorizationDto = new JwtAuthorizationDto();
                 if (redisCacheHelper.Exist(token))
                 {
                     bool isExisted = false;
                     TokenModel tokenModel = redisCacheHelper.Get<TokenModel>(token, out isExisted);
                     //先重新生成token
-                    jwtAuthorizationDto = CreateJwtToken(tokenModel);
-                    //停用修改前的 Token 信息
-                    DeactivateAsync(token);
+                    redisCacheHelper.Set(token,tokenModel, new DistributedCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(Convert.ToDouble(jwtConfig.WebExp))
+                    });
                 }
                 else
                 {
-                    jwtAuthorizationDto.Token = "未获取到当前 Token 信息";
-                    jwtAuthorizationDto.Success = false;
+                    throw new Exception("未获取到当前 Token 信息");
                 }
-                return jwtAuthorizationDto;
             }).ConfigureAwait(false);
         }
     }

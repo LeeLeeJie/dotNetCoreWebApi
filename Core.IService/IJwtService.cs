@@ -22,7 +22,7 @@ namespace Core.IService
         /// <param name="token">Token</param>
         /// <param name="dto">用户信息数据传输对象</param>
         /// <returns></returns>
-        Task<JwtAuthorizationDto> RefreshTokenAsync(string token);
+        Task RefreshTokenAsync(string token);
 
         /// <summary>
         /// 判断当前 Token 是否有效

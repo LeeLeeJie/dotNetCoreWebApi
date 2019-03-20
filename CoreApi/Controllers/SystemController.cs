@@ -82,19 +82,43 @@ namespace CoreApi.Controllers
             {
                 if (service != null)
                 {
-                    JwtAuthorizationDto data = service.RefreshTokenAsync(token).Result;
-                    if (data.Success)
-                    {
-                        result.returnCode = CodeEnum.success;
-                        result.returnMsg = "执行成功";
-                    }
-                    else
-                    {
-                        result.returnCode = CodeEnum.failed;
-                        result.returnMsg = "执行失败";
-                    }
-                    result.Data = data;
-                   
+                    service.RefreshTokenAsync(token);
+                    result.returnCode = CodeEnum.success;
+                    result.returnMsg = "执行成功";
+                }
+                else
+                {
+                    result.returnCode = CodeEnum.failed;
+                    result.returnMsg = "IJwtService 接口初始化失败！";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.returnCode = CodeEnum.failed;
+                result.returnMsg = "执行失败,异常信息：" + ex;
+            }
+            return Json(result);
+        }
+
+        /// <summary>
+        /// 停用Token
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("StopToken")]
+        public JsonResult StopToken(string token)
+        {
+            IJwtService service = new JwtService(_cache, _httpContextAccessor);
+            var result = new ResponseModel();
+            try
+            {
+                if (service != null)
+                {
+                     service.DeactivateAsync(token);
+                    result.returnCode = CodeEnum.success;
+                    result.returnMsg = "执行成功";
+
                 }
                 else
                 {

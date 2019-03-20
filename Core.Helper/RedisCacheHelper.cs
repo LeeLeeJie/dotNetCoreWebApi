@@ -5,9 +5,13 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Caching.Redis;
 
 namespace Core.Helper
 {
+    /// <summary>
+    /// 分布缓存
+    /// </summary>
    public  class RedisCacheHelper
     {
         protected IDistributedCache cache;
@@ -19,6 +23,13 @@ namespace Core.Helper
         public RedisCacheHelper(IDistributedCache cache)
         {
             this.cache = cache;
+        }
+        public RedisCacheHelper()
+        {
+            cache = new RedisCache(new RedisCacheOptions()
+            {
+                Configuration =BaseConfigModel.Configuration["Redis:ConnectionString"]
+            });
         }
 
         /// <summary>
@@ -107,9 +118,6 @@ namespace Core.Helper
                 stringObject= Encoding.UTF8.GetString(bytesObject);//通过UTF-8编码，将字节数组反序列化为Json字符串
             }
             return stringObject;
-
-
-
         }
 
         /// <summary>

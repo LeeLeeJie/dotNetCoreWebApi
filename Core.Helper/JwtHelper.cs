@@ -98,7 +98,7 @@ namespace Core.Helper
             object project = new object();
             try
             {
-                jwtToken.Payload.TryGetValue("Role", out role);
+                jwtToken.Payload.TryGetValue("role", out role);
                 jwtToken.Payload.TryGetValue("Project", out project);
             }
             catch (Exception e)
@@ -122,8 +122,7 @@ namespace Core.Helper
         /// <returns></returns>
         public static bool ValidateRuleBase(string encodeJwt,out TokenModel tm, Func<Dictionary<string, object>, bool> validatePayLoad = null)
         {
-            //与Redis比较
-            RedisCacheHelper redisCacheHelper = new RedisCacheHelper(IDistributedCache cache);
+            
 
             tm = null;
             var success = true;

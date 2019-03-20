@@ -1,5 +1,7 @@
 ﻿using Core.Helper;
+using Core.IService;
 using Core.Model.Base;
+using Core.Service;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
@@ -27,6 +29,7 @@ namespace CoreApi.AuthHelper
         {
             _next = next;
         }
+
         /// <summary>
         /// 验证授权
         /// </summary>
@@ -43,6 +46,13 @@ namespace CoreApi.AuthHelper
                 }
                 var tokenHeader = httpContext.Request.Headers["Authorization"];
                 tokenHeader = tokenHeader.ToString().Substring("Bearer ".Length).Trim();
+                //redis jwt 验证
+                RedisCacheHelper redisCacheHelper = new RedisCacheHelper();
+                if (!redisCacheHelper.Exist(tokenHeader))
+                {
+                    throw new Exception("token不存在！");
+                }
+
                 TokenModel tm = new TokenModel();
                 if (JwtHelper.ValidateRuleBase(tokenHeader, out tm))
                 {
