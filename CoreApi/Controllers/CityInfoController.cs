@@ -92,7 +92,7 @@ namespace CoreApi.Controllers
 
 
         /// 将日志写入数据库
-        /// </summary>
+        /// 
         /// <returns></returns>
         [HttpGet]
         [Route("WriteLogToDb")]

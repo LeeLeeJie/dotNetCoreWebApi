@@ -23,42 +23,48 @@ namespace CoreApi.Middleware
         }
         public async Task Invoke(HttpContext context)
         {
+            bool isCatched = false;
             try
             {
                 await next(context);
             }
-            catch (Exception ex)
+            catch (Exception ex) //发生异常
             {
-                var statusCode = context.Response.StatusCode;
-                if (ex is ArgumentException)
+                //自定义业务异常
+                if (ex is MyException)
                 {
-                    statusCode = 200;
+                    context.Response.StatusCode = ((MyException)ex).GetCode();
                 }
-                await HandleExceptionAsync(context, statusCode, ex.Message);
+                //未知异常
+                else
+                {
+                    context.Response.StatusCode = 500;
+                    //LogHelper.SetLog(LogLevel.Error, ex);
+                }
+                await HandleExceptionAsync(context, context.Response.StatusCode, ex.Message);
+                isCatched = true;
             }
             finally
             {
-                var statusCode = context.Response.StatusCode;
-                var msg = "";
-                if (statusCode == 401)
+                if (!isCatched && context.Response.StatusCode != 200)//未捕捉过并且状态码不为200
                 {
-                    msg = "未授权";
-                }
-                else if (statusCode == 404)
-                {
-                    msg = "未找到服务";
-                }
-                else if (statusCode == 502)
-                {
-                    msg = "请求错误";
-                }
-                else if (statusCode != 200)
-                {
-                    msg = "未知错误";
-                }
-                if (!string.IsNullOrWhiteSpace(msg))
-                {
-                    await HandleExceptionAsync(context, statusCode, msg);
+                    string msg = "";
+                    switch (context.Response.StatusCode)
+                    {
+                        case 401:
+                            msg = "未授权";
+                            break;
+                        case 404:
+                            msg = "未找到服务";
+                            break;
+                        case 502:
+                            msg = "请求错误";
+                            break;
+                        default:
+                            msg = "未知错误";
+                            break;
+                    }
+                    await HandleExceptionAsync(context, context.Response.StatusCode, msg);
                 }
             }
         }

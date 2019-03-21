@@ -50,7 +50,7 @@ namespace CoreApi.AuthHelper
                 RedisCacheHelper redisCacheHelper = new RedisCacheHelper();
                 if (!redisCacheHelper.Exist(tokenHeader))
                 {
-                    throw new Exception("token不存在！");
+                    throw new MyException("token不存在！");
                 }
 
                 TokenModel tm = new TokenModel();
@@ -67,8 +67,7 @@ namespace CoreApi.AuthHelper
                 }
                 else
                 {
-                    httpContext.Response.StatusCode = 400;
-                    throw new Exception("验证不通过");
+                    throw new MyException("验证不通过");
                 }
             }
             catch(Exception ex)
