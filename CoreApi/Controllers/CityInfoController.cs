@@ -43,9 +43,6 @@ namespace CoreApi.Controllers
             var result = new ResponseModel();
             try
             {
-                Logger.Info("写入Info文件");
-                Logger.Debug("写入Debug文件");
-                Logger.Error("写入Error文件");
                 Logger.Info("调用接口开始~~~~~~~~~~");
                 result.returnCode = CodeEnum.success;
                 result.Data = IService.GetPageList(pageIndex, pageSize);
