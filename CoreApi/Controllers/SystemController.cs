@@ -40,7 +40,7 @@ namespace CoreApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("GetJWTStr")]
-        public JsonResult CreateToken(TokenModel tm)
+        public JsonResult CreateToken([FromBody]TokenModel tm)
         {
             
             var result = new ResponseModel();
