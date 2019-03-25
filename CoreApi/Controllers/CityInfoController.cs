@@ -36,8 +36,8 @@ namespace CoreApi.Controllers
         // GET: api/<controller>
         [HttpGet]
         [Route("GetPageList")]
-        //[Authorize(Policy = "Client")]
-        [EnableCors("AllowSpecificOrigin")]
+        [Authorize(Policy = "Client")]
+        [EnableCors("AllowAnyOrigin")]
         public JsonResult GetPageList(int pageIndex = 1, int pageSize = 10)
         {
             var result = new ResponseModel();

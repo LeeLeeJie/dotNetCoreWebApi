@@ -135,7 +135,7 @@ namespace CoreApi
             });
             services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>();
             #endregion
-            #region CORS
+            #region CORS 跨域
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowAnyOrigin", policy =>
@@ -189,6 +189,10 @@ namespace CoreApi
             app.UseErrorHandling();
             #region TokenAuth
             app.UseMiddleware<JwtAuthorizationFilter>();
+            #endregion
+            #region 跨域
+            app.UseCors("AllowAnyOrigin");//必须位于UserMvc之前 
+            app.UseCors("AllowSpecificOrigin");//必须位于UserMvc之前 
             #endregion
             app.UseMvc();
             

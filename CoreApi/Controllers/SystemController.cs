@@ -38,7 +38,7 @@ namespace CoreApi.Controllers
         /// <param name="expiresSliding">相对过期时间，单位：分</param>
         /// <param name="expiresAbsoulte">绝对对过期时间，单位：分</param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         [Route("GetJWTStr")]
         public JsonResult CreateToken(TokenModel tm)
         {
