@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Core.IService;
 using Core.Model.Base;
+using Core.RabbitMQ;
 using Core.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -20,7 +22,7 @@ namespace CoreApi.Controllers
     public class CityInfoController : Controller
     {
         private ICityInfo IService = new CityInfoService();
-        private readonly Logger Logger;
+        private  Logger Logger;
 
         public CityInfoController()
         {
@@ -36,8 +38,8 @@ namespace CoreApi.Controllers
         // GET: api/<controller>
         [HttpGet]
         [Route("GetPageList")]
-        [Authorize(Policy = "Client")]
-        [EnableCors("AllowAnyOrigin")]
+        //[Authorize(Policy = "Client")]
+        //[EnableCors("AllowAnyOrigin")]
         public JsonResult GetPageList(int pageIndex = 1, int pageSize = 10)
         {
             var result = new ResponseModel();
@@ -102,6 +104,37 @@ namespace CoreApi.Controllers
             _dblogger.Info(ei);
             _dblogger.Debug(ei);
             _dblogger.Trace(ei);
+            return Json(result);
+        }
+
+        /// <summary>
+        /// MQ测试
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        // GET: api/<controller>
+        [HttpGet]
+        [Route("MQSendMsg")]
+        public JsonResult MQSendMsg(string  queueName= "TestQueue111", string message="hello MQ")
+        {
+            var result = new ResponseModel();
+            try
+            {
+                result.returnCode = CodeEnum.success;
+                MQService service = new MQService(queueName, message);
+                service.ExeSend();
+                Thread.Sleep(1000);
+                service.ExeReceive();
+                result.returnMsg = "执行成功";
+            }
+            catch (Exception ex)
+            {
+                result.returnCode = CodeEnum.failed;
+                result.returnMsg = ex.Message;
+                Logger.Error(ex);
+            }
+
             return Json(result);
         }
 

@@ -1,0 +1,9 @@
+E:\dotNetCoreWebApi\SqlSugar\bin\Release\netstandard2.0\SqlSugar.deps.json
+E:\dotNetCoreWebApi\SqlSugar\bin\Release\netstandard2.0\SqlSugar.dll
+E:\dotNetCoreWebApi\SqlSugar\bin\Release\netstandard2.0\SqlSugar.pdb
+E:\dotNetCoreWebApi\SqlSugar\obj\Release\netstandard2.0\SqlSugar.csprojAssemblyReference.cache
+E:\dotNetCoreWebApi\SqlSugar\obj\Release\netstandard2.0\SqlSugar.csproj.CoreCompileInputs.cache
+E:\dotNetCoreWebApi\SqlSugar\obj\Release\netstandard2.0\SqlSugar.AssemblyInfoInputs.cache
+E:\dotNetCoreWebApi\SqlSugar\obj\Release\netstandard2.0\SqlSugar.AssemblyInfo.cs
+E:\dotNetCoreWebApi\SqlSugar\obj\Release\netstandard2.0\SqlSugar.dll
+E:\dotNetCoreWebApi\SqlSugar\obj\Release\netstandard2.0\SqlSugar.pdb

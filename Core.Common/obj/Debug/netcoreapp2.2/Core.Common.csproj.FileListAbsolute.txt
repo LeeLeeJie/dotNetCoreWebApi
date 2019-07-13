@@ -1,0 +1,12 @@
+E:\dotNetCoreWebApi\Core.Common\bin\Debug\netcoreapp2.2\Core.Common.deps.json
+E:\dotNetCoreWebApi\Core.Common\bin\Debug\netcoreapp2.2\Core.Common.dll
+E:\dotNetCoreWebApi\Core.Common\bin\Debug\netcoreapp2.2\Core.Common.pdb
+E:\dotNetCoreWebApi\Core.Common\bin\Debug\netcoreapp2.2\Newtonsoft.Json.dll
+E:\dotNetCoreWebApi\Core.Common\bin\Debug\netcoreapp2.2\Newtonsoft.Json.xml
+E:\dotNetCoreWebApi\Core.Common\obj\Debug\netcoreapp2.2\Core.Common.csprojAssemblyReference.cache
+E:\dotNetCoreWebApi\Core.Common\obj\Debug\netcoreapp2.2\Core.Common.csproj.CoreCompileInputs.cache
+E:\dotNetCoreWebApi\Core.Common\obj\Debug\netcoreapp2.2\Core.Common.AssemblyInfoInputs.cache
+E:\dotNetCoreWebApi\Core.Common\obj\Debug\netcoreapp2.2\Core.Common.AssemblyInfo.cs
+E:\dotNetCoreWebApi\Core.Common\obj\Debug\netcoreapp2.2\Core.Common.csproj.CopyComplete
+E:\dotNetCoreWebApi\Core.Common\obj\Debug\netcoreapp2.2\Core.Common.dll
+E:\dotNetCoreWebApi\Core.Common\obj\Debug\netcoreapp2.2\Core.Common.pdb

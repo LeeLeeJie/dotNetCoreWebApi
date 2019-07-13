@@ -1,0 +1,12 @@
+E:\dotNetCoreWebApi\Core.Entity\bin\Release\netcoreapp2.2\Core.Entity.deps.json
+E:\dotNetCoreWebApi\Core.Entity\bin\Release\netcoreapp2.2\Core.Entity.dll
+E:\dotNetCoreWebApi\Core.Entity\bin\Release\netcoreapp2.2\Core.Entity.pdb
+E:\dotNetCoreWebApi\Core.Entity\bin\Release\netcoreapp2.2\SqlSugar.dll
+E:\dotNetCoreWebApi\Core.Entity\bin\Release\netcoreapp2.2\SqlSugar.pdb
+E:\dotNetCoreWebApi\Core.Entity\obj\Release\netcoreapp2.2\Core.Entity.csprojAssemblyReference.cache
+E:\dotNetCoreWebApi\Core.Entity\obj\Release\netcoreapp2.2\Core.Entity.csproj.CoreCompileInputs.cache
+E:\dotNetCoreWebApi\Core.Entity\obj\Release\netcoreapp2.2\Core.Entity.AssemblyInfoInputs.cache
+E:\dotNetCoreWebApi\Core.Entity\obj\Release\netcoreapp2.2\Core.Entity.AssemblyInfo.cs
+E:\dotNetCoreWebApi\Core.Entity\obj\Release\netcoreapp2.2\Core.Entity.csproj.CopyComplete
+E:\dotNetCoreWebApi\Core.Entity\obj\Release\netcoreapp2.2\Core.Entity.dll
+E:\dotNetCoreWebApi\Core.Entity\obj\Release\netcoreapp2.2\Core.Entity.pdb

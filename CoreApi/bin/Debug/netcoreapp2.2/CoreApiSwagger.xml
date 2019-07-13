@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CoreApi</name>
+    </assembly>
+    <members>
+        <member name="M:CoreApi.Controllers.CityInfoController.GetPageList(System.Int32,System.Int32)">
+            <summary>
+            获取分页
+            </summary>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.CityInfoController.GetCityListByProID(System.Int32)">
+            <summary>
+            根据省份ID获取下属城市
+            </summary>
+            <param name="id">省份ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.CityInfoController.WriteLogToDb">
+            将日志写入数据库
+            
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.CityInfoController.MQSendMsg(System.String,System.String)">
+            <summary>
+            MQ测试
+            </summary>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.SystemController.CreateToken(Core.Helper.TokenModel)">
+            <summary>
+            模拟登录，获取JWT
+            </summary>
+            <param name="UserId">用户Id</param>
+            <param name="Sub">身份</param>
+            <param name="expiresSliding">相对过期时间，单位：分</param>
+            <param name="expiresAbsoulte">绝对对过期时间，单位：分</param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.SystemController.RefresToken(System.String)">
+            <summary>
+            刷新Token
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.SystemController.StopToken(System.String)">
+            <summary>
+            停用Token
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Controllers.SystemController.CreateEntity(System.String)">
+            <summary>
+            生成实体类
+            </summary>
+            <param name="entityName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CoreApi.Middleware.ErrorHandlingHelper.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            请求异常处理方法
+            </summary>
+            <param name="next"></param>
+        </member>
+        <member name="T:CoreApi.AuthHelper.JwtAuthorizationFilter">
+            <summary>
+            Token验证授权中间件    
+            </summary>
+        </member>
+        <member name="F:CoreApi.AuthHelper.JwtAuthorizationFilter._next">
+            <summary>
+            http委托
+            </summary>
+        </member>
+        <member name="M:CoreApi.AuthHelper.JwtAuthorizationFilter.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="next"></param>
+        </member>
+        <member name="M:CoreApi.AuthHelper.JwtAuthorizationFilter.Invoke(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            验证授权
+            </summary>
+            <param name="httpContext"></param>
+            <returns></returns>
+        </member>
+        <member name="P:CoreApi.Startup.Configuration">
+            <summary>
+            配置信息
+            </summary>
+        </member>
+    </members>
+</doc>

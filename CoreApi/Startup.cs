@@ -7,12 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.Helper;
 using Core.Model.ConfigModel;
+using Core.Model.WebSockets;
 using CoreApi.AuthHelper;
 using CoreApi.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -159,6 +161,10 @@ namespace CoreApi
                 options.Configuration = BaseConfigModel.Configuration["Redis:ConnectionString"];
             });
             #endregion
+            #region WebSockets
+            services.AddSingleton<ICustomWebSocketFactory, CustomWebSocketFactory>();
+            services.AddSingleton<ICustomWebSocketMessageHandler, CustomWebSocketMessageHandler>();
+            #endregion
 
         }
 
@@ -194,6 +200,18 @@ namespace CoreApi
             app.UseCors("AllowAnyOrigin");//必须位于UserMvc之前 
             app.UseCors("AllowSpecificOrigin");//必须位于UserMvc之前 
             #endregion
+            #region WebSockets
+            var webSocketOptions = new Microsoft.AspNetCore.Builder.WebSocketOptions()
+            {
+                KeepAliveInterval = TimeSpan.FromSeconds(120),
+                ReceiveBufferSize = 4 * 1024
+            };
+            //webSocketOptions.AllowedOrigins.Add("https://client.com");
+            //webSocketOptions.AllowedOrigins.Add("https://www.client.com");
+            app.UseWebSockets(webSocketOptions);
+            app.UseCustomWebSocketManager();
+            #endregion
+
             app.UseMvc();
             
         }
