@@ -177,8 +177,8 @@ namespace CoreApi
             //this._env.ConfigureNLog(Path.Combine("Config", "nlog.config"));//读取Nlog配置文件
             #region NLog配置
             loggerFactory.AddNLog(); // 添加NLog
-            loggerFactory.ConfigureNLog(Path.Combine("Config", "nlog.config")); // 添加Nlog.config配置文件
-            //loggerFactory.ConfigureNLog(Path.Combine("Config", "nlogDB.config")); //把日志文件保存到数据库配置文件
+            //loggerFactory.ConfigureNLog(Path.Combine("Config", "nlog.config")); // 添加Nlog.config配置文件
+            loggerFactory.ConfigureNLog(Path.Combine("Config", "nlogDB.config")); //把日志文件保存到数据库配置文件
             loggerFactory.AddDebug();
             #endregion
             if (env.IsDevelopment())

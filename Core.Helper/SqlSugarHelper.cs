@@ -18,8 +18,10 @@ namespace Core.Helper
             SqlSugarClient db = new SqlSugarClient(
                 new ConnectionConfig()
                 {
-                    ConnectionString = BaseConfigModel.Configuration["db:BmConnString"],
-                    DbType = DbType.MySql,
+                    //ConnectionString = BaseConfigModel.Configuration["db:BmConnString"],
+                    //DbType = DbType.MySql,
+                    ConnectionString = BaseConfigModel.Configuration["db:SqlServerConnString"],
+                    DbType = DbType.SqlServer,
                     IsAutoCloseConnection = true
                 }
             );
